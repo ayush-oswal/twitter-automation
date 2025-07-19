@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "twitter-automation": {
+      "command": "node",
+      "args": ["C:\\Users\\YourName\\Desktop\\coding\\twitter-automation\\dist\\index.js"]
+    }
+  }
+} 
