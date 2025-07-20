@@ -13,9 +13,9 @@ A Model Context Protocol (MCP) server that enables Claude to automate Twitter po
 
 ## Quick Start
 
-### 1. Install Dependencies
+### 1. Install Package
 ```bash
-npm install
+npm install -g twitter-automation-mcp
 ```
 
 ### 2. Get API Keys
@@ -25,37 +25,51 @@ npm install
 
 **Google AI API Key**: Get your key from [Google AI Studio](https://aistudio.google.com/)
 
-### 3. Configure Environment
-```bash
-cp env.example .env
-```
-
-Edit `.env` with your credentials:
-```env
-TWITTER_API_KEY=your_twitter_api_key
-TWITTER_API_SECRET=your_twitter_api_secret  
-TWITTER_ACCESS_TOKEN=your_twitter_access_token
-TWITTER_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
-GOOGLE_AI_API_KEY=your_google_ai_api_key
-IMAGE_STORAGE_PATH=./images
-```
-
-### 4. Build & Configure
-```bash
-npm run build
-```
+### 3. Configure Claude Desktop
 
 Add to your Claude Desktop MCP config:
+
+**Option A: Using NPM Package (Recommended)**
+```json
+{
+  "mcpServers": {
+    "twitter-automation": {
+      "command": "npx",
+      "args": ["twitter-automation-mcp"],
+      "env": {
+        "TWITTER_API_KEY": "your_api_key",
+        "TWITTER_API_SECRET": "your_api_secret",
+        "TWITTER_ACCESS_TOKEN": "your_access_token",
+        "TWITTER_ACCESS_TOKEN_SECRET": "your_access_token_secret",
+        "GOOGLE_AI_API_KEY": "your_google_ai_key"
+      }
+    }
+  }
+}
+```
+
+**Option B: Using Local Installation**
 ```json
 {
   "mcpServers": {
     "twitter-automation": {
       "command": "node",
-      "args": ["path/to/twitter-automation/dist/index.js"]
+      "args": ["path/to/twitter-automation/dist/index.js"],
+      "env": {
+        "TWITTER_API_KEY": "your_api_key",
+        "TWITTER_API_SECRET": "your_api_secret",
+        "TWITTER_ACCESS_TOKEN": "your_access_token",
+        "TWITTER_ACCESS_TOKEN_SECRET": "your_access_token_secret",
+        "GOOGLE_AI_API_KEY": "your_google_ai_key"
+      }
     }
   }
 }
 ```
+
+### 4. Restart Claude Desktop
+
+Restart Claude Desktop to load the MCP server.
 
 ## Usage
 
@@ -113,6 +127,14 @@ The server provides clear error messages:
 **"Image upload failed"**: Check that your images are valid PNG/JPG files under 5MB.
 
 **"Content too long"**: Each tweet must be under 275 characters. Split long content into thread tweets.
+
+## Deployment
+
+Want to deploy this MCP server or run it in a container? 
+
+👉 **See [DEPLOYMENT.md](DEPLOYMENT.md)** for deployment options:
+- **NPM Package** - Publish and use with `npx` (recommended)
+- **Docker Container** - Run in isolated environment with full environment variable setup
 
 ## License
 

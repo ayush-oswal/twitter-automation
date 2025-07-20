@@ -42,4 +42,11 @@ logs/
 coverage/
 
 # TypeScript cache
-*.tsbuildinfo 
+*.tsbuildinfo
+
+# Deployment artifacts
+dist-binary/
+*.tgz
+
+# Docker
+docker-compose.override.yml 
