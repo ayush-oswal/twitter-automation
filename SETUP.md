@@ -1,105 +1,106 @@
-# Quick Setup Guide
+# Setup Guide
 
-## Step-by-Step Installation
+## Prerequisites
 
-### 1. Clone and Install
+- Node.js 18+
+- Twitter Developer Account  
+- Google AI Studio Account
+
+## Step 1: Get API Keys
+
+### Twitter API Keys & Tokens
+
+Follow this comprehensive guide to generate your Twitter API credentials:
+👉 **[Generate Twitter API Keys & Tokens](https://www.ryancarmody.dev/blog/generate-twitter-api-keys-and-tokens)**
+
+**Important**: Ensure your Twitter app has **Read & Write** permissions. After changing permissions, you **must regenerate** your Access Token and Access Token Secret.
+
+### Google AI Studio API Key
+
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Sign in with your Google account
+3. Click "Get API Key" 
+4. Create a new API key for your project
+
+## Step 2: Install & Configure
 
 ```bash
-# Navigate to your project directory
+# Clone and install
+git clone <your-repo>
 cd twitter-automation
-
-# Install dependencies
 npm install
 
-# Create environment file
+# Configure environment
 cp env.example .env
 ```
 
-### 2. Get Twitter API Keys
-
-1. Visit [developer.twitter.com](https://developer.twitter.com)
-2. Create a new app or select existing app
-3. Go to "Keys and tokens" section
-4. Generate:
-   - API Key
-   - API Secret Key
-   - Access Token
-   - Access Token Secret
-5. Ensure app permissions are set to "Read and Write"
-
-### 3. Get Google AI Studio API Key
-
-1. Visit [aistudio.google.com](https://aistudio.google.com)
-2. Sign in with your Google account
-3. Navigate to "Get API Key" section
-4. Create new API key for your project
-5. Copy the key (you won't see it again!)
-6. Ensure you have access to Gemini 2.0 Flash with image generation
-
-### 4. Configure Environment
-
-Edit your `.env` file:
-
+Edit `.env`:
 ```env
-TWITTER_API_KEY=your_actual_api_key
-TWITTER_API_SECRET=your_actual_api_secret
-TWITTER_ACCESS_TOKEN=your_actual_access_token
-TWITTER_ACCESS_TOKEN_SECRET=your_actual_access_token_secret
-GOOGLE_AI_API_KEY=your_actual_google_ai_key
+TWITTER_API_KEY=your_twitter_api_key
+TWITTER_API_SECRET=your_twitter_api_secret
+TWITTER_ACCESS_TOKEN=your_twitter_access_token  
+TWITTER_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret
+GOOGLE_AI_API_KEY=your_google_ai_api_key
+IMAGE_STORAGE_PATH=./images
 ```
 
-### 5. Build the Project
+## Step 3: Build & Test
 
 ```bash
+# Build the project
 npm run build
+
+# Test the server
+npm start
 ```
 
-### 6. Configure Claude Desktop
+If successful, you'll see:
+```
+Twitter Automation MCP Server started successfully!
+Available tools: generateImages, addImageFromUrl, postTweet
+```
 
-**Windows location**: `%APPDATA%\Claude\claude_desktop_config.json`
-**Mac location**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+## Step 4: Configure Claude Desktop
 
-Replace `YourName` with your actual Windows username:
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`  
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
+Add this configuration:
 ```json
 {
   "mcpServers": {
     "twitter-automation": {
       "command": "node",
-      "args": ["C:\\Users\\YourName\\Desktop\\coding\\twitter-automation\\dist\\index.js"]
+      "args": ["C:\\full\\path\\to\\twitter-automation\\dist\\index.js"]
     }
   }
 }
 ```
 
-**Important Notes:**
-- Use **double backslashes** (`\\`) for Windows paths in JSON
-- Replace `YourName` with your actual Windows username
-- Your `.env` file will be automatically loaded! No need to duplicate environment variables.
+**Notes:**
+- Use **full absolute paths** 
+- Use **double backslashes** (`\\`) on Windows
+- Replace with your actual project path
 
+## Step 5: Restart Claude Desktop
 
-
-### 7. Test the Setup
-
-Restart Claude Desktop and try:
-
-```
-Can you help me create a tweet about AI? Generate an image of a robot if needed.
-```
+Restart Claude Desktop completely for the MCP server to load.
 
 ## Troubleshooting
 
-- **Import errors**: Run `npm install` again
-- **Permission errors**: Check Twitter app permissions
-- **Path errors**: Use absolute paths in Claude config
-- **API errors**: Verify all keys are correct and active
-- **Gemini access**: Ensure your Google account has access to Gemini 2.0 Flash with image generation
+**"403 Forbidden"**: Your Twitter app lacks proper permissions. Ensure Read & Write access and regenerate tokens.
 
-## Ready to Tweet! 🚀
+**"Cannot find module"**: Verify the path in your MCP config points to the built `dist/index.js` file.
 
-Your MCP server is now ready. Claude can now:
-- Generate images with Google AI Studio's Gemini 2.0 Flash for specific tweets
-- Add existing images from URLs to specific tweets
-- Attach images to any tweet in a thread (main tweet or thread tweets)
-- Upload them to Twitter
-- Post engaging tweets with threads and targeted image placement 
+**"ENOENT .env"**: Make sure your `.env` file exists in the project root with all required keys.
+
+**MCP not loading**: Check Claude Desktop logs for specific error messages.
+
+## Verification
+
+Test in Claude Desktop:
+```
+Generate an image of a sunset and post this tweet: "Testing my MCP server! 🌅"
+```
+
+If successful, you'll see a tweet posted to your Twitter account with the generated image. 

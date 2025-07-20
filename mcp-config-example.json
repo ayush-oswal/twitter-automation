@@ -2,7 +2,7 @@
   "mcpServers": {
     "twitter-automation": {
       "command": "node",
-      "args": ["C:\\Users\\YourName\\Desktop\\coding\\twitter-automation\\dist\\index.js"]
+      "args": ["C:\\path\\to\\twitter-automation\\dist\\index.js"]
     }
   }
 } 

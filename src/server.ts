@@ -7,7 +7,6 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { TwitterAutomation } from './TwitterAutomation.js';
 
-// Create global instance of TwitterAutomation
 const twitterAutomation = new TwitterAutomation();
 
 const server = new Server(
@@ -22,7 +21,6 @@ const server = new Server(
   }
 );
 
-// List available tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
@@ -76,17 +74,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ['imageUrl'],
         },
       },
-      {
-        name: 'uploadImages',
-        description: 'Upload all previously generated/added images to Twitter. This prepares them for use in tweets.',
-        inputSchema: {
-          type: 'object',
-          properties: {},
-        },
-      },
+
       {
         name: 'postTweet',
-        description: 'Post a tweet with optional images and thread support. Can handle formatted text with emojis and proper threading.',
+        description: 'Post a tweet with optional images and thread support. Automatically uploads any generated/added images and validates content length (max 275 chars per tweet). Can handle formatted text with emojis and proper threading.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -109,7 +100,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-// Handle tool calls
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
@@ -187,28 +177,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      case 'uploadImages': {
-        const mediaIdsMap = await twitterAutomation.uploadImages();
-        const state = twitterAutomation.getState();
-        const totalUploadedImages = Array.from(mediaIdsMap.values()).reduce((total, mediaIds) => total + mediaIds.length, 0);
-
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify({
-                success: true,
-                message: `Successfully uploaded ${totalUploadedImages} images to Twitter`,
-                mediaIdsByThread: Object.fromEntries(mediaIdsMap),
-                uploadedCount: totalUploadedImages,
-                threadsWithImages: Array.from(mediaIdsMap.keys()).sort(),
-                readyForTweet: totalUploadedImages > 0,
-              }, null, 2),
-            },
-          ],
-        };
-      }
-
       case 'postTweet': {
         const { content, threadContent } = args as {
           content: string;
@@ -265,7 +233,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
-// Error handling
 server.onerror = (error) => {
   console.error('[MCP Error]', error);
 };

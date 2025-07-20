@@ -10,7 +10,7 @@ async function main() {
   await server.connect(transport);
   
   console.error('Twitter Automation MCP Server started successfully!');
-  console.error('Available tools: generateImages, addImageFromUrl, uploadImages, postTweet');
+  console.error('Available tools: generateImages, addImageFromUrl, postTweet');
 }
 
 main().catch((error) => {
